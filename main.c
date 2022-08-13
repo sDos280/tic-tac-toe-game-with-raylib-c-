@@ -74,38 +74,7 @@ int main(void)
             }
         }
 
-            //DrawRectangle(gridStartPositonX,gridStartPositonY, gridStartPositonSize, gridStartPositonSize, WHITE);
         if (state == PLAYING){
-
-            BeginDrawing();
-                ClearBackground(backgroundColor);
-                turnText[0] = (IsXTurn)? 'X' : 'O';
-                DrawText(turnText, 353, 30, 30, WHITE);
-                // vertical lines
-                DrawLineEx((Vector2){354, 92}, (Vector2){354, 358}, 10, lineColor);
-                DrawLineEx((Vector2){443, 92}, (Vector2){443, 358}, 10, lineColor);
-                // horizontal lines
-                DrawLineEx((Vector2){266, 180}, (Vector2){532, 180}, 10, lineColor);
-                DrawLineEx((Vector2){266, 269}, (Vector2){532, 269}, 10, lineColor);
-            
-                
-                // draw grid values
-                for(int i = 0; i < 3; i++){
-                    for(int j = 0; j < 3; j++){
-                        Vector2 mid = (Vector2){310 + j * 88, 135 + i * 88};
-                        if (grid[i][j]==1){
-                            DrawLineEx((Vector2){mid.x-27, mid.y-27}, (Vector2){mid.x+27, mid.y+27}, 8, xColor);
-                            DrawCircle(mid.x-27, mid.y-27, 4, xColor);
-                            DrawCircle(mid.x+27, mid.y+27, 4, xColor);
-                            DrawLineEx((Vector2){mid.x-27, mid.y+27}, (Vector2){mid.x+27, mid.y-27}, 8, xColor);
-                            DrawCircle(mid.x-27, mid.y+27, 4, xColor);
-                            DrawCircle(mid.x+27, mid.y-27, 4, xColor);
-                        }else if (grid[i][j]==-1){
-                            DrawRing(mid, 20, 30, 0, 360, 360, oColor);
-                        }
-                    }
-                }
-            EndDrawing();
 
             // check for a winner
             for(int i = 0; i < 8; i++){
@@ -139,6 +108,38 @@ int main(void)
                     state = DRAW;
                 }
             }
+        }
+        
+        if (state == PLAYING){
+            BeginDrawing();
+                ClearBackground(backgroundColor);
+                turnText[0] = (IsXTurn)? 'X' : 'O';
+                DrawText(turnText, 353, 30, 30, WHITE);
+                // vertical lines
+                DrawLineEx((Vector2){354, 92}, (Vector2){354, 358}, 10, lineColor);
+                DrawLineEx((Vector2){443, 92}, (Vector2){443, 358}, 10, lineColor);
+                // horizontal lines
+                DrawLineEx((Vector2){266, 180}, (Vector2){532, 180}, 10, lineColor);
+                DrawLineEx((Vector2){266, 269}, (Vector2){532, 269}, 10, lineColor);
+            
+                
+                // draw grid values
+                for(int i = 0; i < 3; i++){
+                    for(int j = 0; j < 3; j++){
+                        Vector2 mid = (Vector2){310 + j * 88, 135 + i * 88};
+                        if (grid[i][j]==1){
+                            DrawLineEx((Vector2){mid.x-27, mid.y-27}, (Vector2){mid.x+27, mid.y+27}, 8, xColor);
+                            DrawCircle(mid.x-27, mid.y-27, 4, xColor);
+                            DrawCircle(mid.x+27, mid.y+27, 4, xColor);
+                            DrawLineEx((Vector2){mid.x-27, mid.y+27}, (Vector2){mid.x+27, mid.y-27}, 8, xColor);
+                            DrawCircle(mid.x-27, mid.y+27, 4, xColor);
+                            DrawCircle(mid.x+27, mid.y-27, 4, xColor);
+                        }else if (grid[i][j]==-1){
+                            DrawRing(mid, 20, 30, 0, 360, 360, oColor);
+                        }
+                    }
+                }
+            EndDrawing();
         }else if (state == DRAW){
             BeginDrawing();
                 ClearBackground(backgroundColor);
@@ -174,8 +175,8 @@ int main(void)
                     state = PLAYING;
                     IsXTurn = true;
                     memset(grid[0], 0, 36);
+                }
             EndDrawing();
-             }
         }
     }
 
