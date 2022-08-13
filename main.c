@@ -22,7 +22,7 @@ int main(void)
 
     bool IsXTurn = true;
 
-    GameState state = DRAW;
+    GameState state = PLAYING;
 
     int grid[3][3] = {
         {0, 0, 0},
