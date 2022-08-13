@@ -74,12 +74,11 @@ int main(void)
             }
         }
 
-        BeginDrawing();
-
-            ClearBackground(backgroundColor);
             //DrawRectangle(gridStartPositonX,gridStartPositonY, gridStartPositonSize, gridStartPositonSize, WHITE);
-            if (state == PLAYING){
-                
+        if (state == PLAYING){
+
+            BeginDrawing();
+                ClearBackground(backgroundColor);
                 turnText[0] = (IsXTurn)? 'X' : 'O';
                 DrawText(turnText, 353, 30, 30, WHITE);
                 // vertical lines
@@ -88,6 +87,7 @@ int main(void)
                 // horizontal lines
                 DrawLineEx((Vector2){266, 180}, (Vector2){532, 180}, 10, lineColor);
                 DrawLineEx((Vector2){266, 269}, (Vector2){532, 269}, 10, lineColor);
+            
                 
                 // draw grid values
                 for(int i = 0; i < 3; i++){
@@ -105,41 +105,43 @@ int main(void)
                         }
                     }
                 }
+            EndDrawing();
 
-                // check for window resize
-                for(int i = 0; i < 8; i++){
-                    int count = 0;
-                    for(int j = 0; j < 3; j++){
-                        int row = (checks[i][j] / 3);
-                        int column = checks[i][j] - row * 3;
-                        count += grid[row][column];
-                    }
-                    if (count == 3){
-                        state = XWIN;
-                        break;
-                    }else if (count == -3){
-                        state = OWIN;
-                        break;  
-                    }
+            // check for a winner
+            for(int i = 0; i < 8; i++){
+                int count = 0;
+                for(int j = 0; j < 3; j++){
+                    int row = (checks[i][j] / 3);
+                    int column = checks[i][j] - row * 3;
+                    count += grid[row][column];
                 }
+                if (count == 3){
+                    state = XWIN;
+                    break;
+                }else if (count == -3){
+                    state = OWIN;
+                    break;  
+                }
+            }
 
-                // if no one won check, for draw(is the grid Full) 
-                if (state == PLAYING){
-                    bool isGridFull = true;
-                    for(int i = 0; i < 3; i++){
-                        for(int j = 0; j < 3; j++){
-                            if (grid[i][j]==0){
-                                isGridFull = false;
-                            }
+            // if no one won check, for draw(is the grid Full) 
+            if (state == PLAYING){
+                bool isGridFull = true;
+                for(int i = 0; i < 3; i++){
+                    for(int j = 0; j < 3; j++){
+                        if (grid[i][j]==0){
+                            isGridFull = false;
                         }
                     }
-                    // if no zero found and no one won => the game is a draw
-                    if (isGridFull){
-                        state = DRAW;
-                    }
                 }
-
-            }else if (state == DRAW){
+                // if no zero found and no one won => the game is a draw
+                if (isGridFull){
+                    state = DRAW;
+                }
+            }
+        }else if (state == DRAW){
+            BeginDrawing();
+                ClearBackground(backgroundColor);
                 DrawText("X", 325, 130, 120, xColor);
                 DrawText("O", 402, 130, 120, oColor);
                 DrawText("DRAW!", 330, 300, 50, oColor);
@@ -149,7 +151,10 @@ int main(void)
                     IsXTurn = true;
                     memset(grid[0], 0, 36);
                 }
-            }else if (state == XWIN){
+            EndDrawing();
+        }else if (state == XWIN){
+            BeginDrawing();
+                ClearBackground(backgroundColor);
                 DrawText("X", 365, 130, 120, xColor);
                 DrawText("WINNER!", 300, 300, 50, xColor);
                 DrawText("press R to reset game", 226, 390, 30, xColor);
@@ -158,7 +163,10 @@ int main(void)
                     IsXTurn = true;
                     memset(grid[0], 0, 36);
                 }
-            }else if (state == OWIN){
+            EndDrawing();
+        }else if (state == OWIN){
+            BeginDrawing();
+                ClearBackground(backgroundColor);
                 DrawText("O", 365, 130, 120, oColor);
                 DrawText("WINNER!", 300, 300, 50, oColor);
                 DrawText("press R to reset game", 226, 390, 30, oColor);
@@ -166,10 +174,9 @@ int main(void)
                     state = PLAYING;
                     IsXTurn = true;
                     memset(grid[0], 0, 36);
-                }
-            }
-            
-        EndDrawing();
+            EndDrawing();
+             }
+        }
     }
 
     CloseWindow();
