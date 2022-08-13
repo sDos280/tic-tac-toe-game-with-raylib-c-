@@ -54,28 +54,28 @@ int main(void)
 
     while (!WindowShouldClose())
     {
-        Vector2 mousePos = GetMousePosition();
+        // game logic
+        if (state == PLAYING){
 
-        if (IsMouseButtonPressed(0)){
-            if ((266 < mousePos.x && mousePos.x < 532) && (92 < mousePos.y && mousePos.y < 358)){
-                // get mouse position in the grid
-                int gridX = (int)((mousePos.x - 266) / 88); 
-                int gridY = (int)((mousePos.y - 92) / 88);
-                //set grid values
-                if (grid[gridY][gridX]==0){
-                    if (IsXTurn){
-                        grid[gridY][gridX] = 1;
-                        IsXTurn = !IsXTurn;
-                    }else{
-                        grid[gridY][gridX] = -1;
-                        IsXTurn = !IsXTurn;
+            Vector2 mousePos = GetMousePosition();
+
+            if (IsMouseButtonPressed(0)){
+                if ((266 < mousePos.x && mousePos.x < 532) && (92 < mousePos.y && mousePos.y < 358)){
+                    // get mouse position in the grid
+                    int gridX = (int)((mousePos.x - 266) / 88); 
+                    int gridY = (int)((mousePos.y - 92) / 88);
+                    //set grid values
+                    if (grid[gridY][gridX]==0){
+                        if (IsXTurn){
+                            grid[gridY][gridX] = 1;
+                            IsXTurn = !IsXTurn;
+                        }else{
+                            grid[gridY][gridX] = -1;
+                            IsXTurn = !IsXTurn;
+                        }
                     }
                 }
             }
-        }
-
-        if (state == PLAYING){
-
             // check for a winner
             for(int i = 0; i < 8; i++){
                 int count = 0;
@@ -110,9 +110,10 @@ int main(void)
             }
         }
         
-        if (state == PLAYING){
-            BeginDrawing();
-                ClearBackground(backgroundColor);
+        // drawing by state
+        BeginDrawing();
+            ClearBackground(backgroundColor);
+            if (state == PLAYING){
                 turnText[0] = (IsXTurn)? 'X' : 'O';
                 DrawText(turnText, 353, 30, 30, WHITE);
                 // vertical lines
@@ -121,8 +122,7 @@ int main(void)
                 // horizontal lines
                 DrawLineEx((Vector2){266, 180}, (Vector2){532, 180}, 10, lineColor);
                 DrawLineEx((Vector2){266, 269}, (Vector2){532, 269}, 10, lineColor);
-            
-                
+                    
                 // draw grid values
                 for(int i = 0; i < 3; i++){
                     for(int j = 0; j < 3; j++){
@@ -139,10 +139,7 @@ int main(void)
                         }
                     }
                 }
-            EndDrawing();
-        }else if (state == DRAW){
-            BeginDrawing();
-                ClearBackground(backgroundColor);
+            }else if (state == DRAW){
                 DrawText("X", 325, 130, 120, xColor);
                 DrawText("O", 402, 130, 120, oColor);
                 DrawText("DRAW!", 330, 300, 50, oColor);
@@ -152,10 +149,7 @@ int main(void)
                     IsXTurn = true;
                     memset(grid[0], 0, 36);
                 }
-            EndDrawing();
-        }else if (state == XWIN){
-            BeginDrawing();
-                ClearBackground(backgroundColor);
+            }else if (state == XWIN){
                 DrawText("X", 365, 130, 120, xColor);
                 DrawText("WINNER!", 300, 300, 50, xColor);
                 DrawText("press R to reset game", 226, 390, 30, xColor);
@@ -164,10 +158,7 @@ int main(void)
                     IsXTurn = true;
                     memset(grid[0], 0, 36);
                 }
-            EndDrawing();
-        }else if (state == OWIN){
-            BeginDrawing();
-                ClearBackground(backgroundColor);
+            }else if (state == OWIN){
                 DrawText("O", 365, 130, 120, oColor);
                 DrawText("WINNER!", 300, 300, 50, oColor);
                 DrawText("press R to reset game", 226, 390, 30, oColor);
@@ -176,8 +167,8 @@ int main(void)
                     IsXTurn = true;
                     memset(grid[0], 0, 36);
                 }
-            EndDrawing();
-        }
+            }
+        EndDrawing();
     }
 
     CloseWindow();
