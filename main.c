@@ -108,6 +108,24 @@ int main(void)
                     state = DRAW;
                 }
             }
+        }else if (state == DRAW){
+            if (IsKeyPressed(KEY_R)){
+                state = PLAYING;
+                IsXTurn = true;
+                memset(grid[0], 0, 36);
+            }
+        }else if (state == XWIN){
+            if (IsKeyPressed(KEY_R)){
+                state = PLAYING;
+                IsXTurn = true;
+                memset(grid[0], 0, 36);
+            } 
+        }else if (state == OWIN){
+            if (IsKeyPressed(KEY_R)){
+                state = PLAYING;
+                IsXTurn = true;
+                memset(grid[0], 0, 36);
+                }
         }
         
         // drawing by state
@@ -144,29 +162,14 @@ int main(void)
                 DrawText("O", 402, 130, 120, oColor);
                 DrawText("DRAW!", 330, 300, 50, oColor);
                 DrawText("press R to reset game", 226, 390, 30, xColor);
-                if (IsKeyPressed(KEY_R)){
-                    state = PLAYING;
-                    IsXTurn = true;
-                    memset(grid[0], 0, 36);
-                }
             }else if (state == XWIN){
                 DrawText("X", 365, 130, 120, xColor);
                 DrawText("WINNER!", 300, 300, 50, xColor);
                 DrawText("press R to reset game", 226, 390, 30, xColor);
-                if (IsKeyPressed(KEY_R)){
-                    state = PLAYING;
-                    IsXTurn = true;
-                    memset(grid[0], 0, 36);
-                }
             }else if (state == OWIN){
                 DrawText("O", 365, 130, 120, oColor);
                 DrawText("WINNER!", 300, 300, 50, oColor);
                 DrawText("press R to reset game", 226, 390, 30, oColor);
-                if (IsKeyPressed(KEY_R)){
-                    state = PLAYING;
-                    IsXTurn = true;
-                    memset(grid[0], 0, 36);
-                }
             }
         EndDrawing();
     }
